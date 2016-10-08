@@ -4,10 +4,27 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mysql = require("mysql");
+var cors =  require("cors");
 
 var usuarios = require("./routes/usuarios");
 
 var app = express();
+var db = mysql.createConnection({
+  host:"localhost",
+  user:"root",
+  password:"",
+  database:"usuarios"
+});
+
+db.connect();
+
+app.use((req, res, next)=>{
+  req.db = db;
+  next();  
+});
+
+app.use(cors());
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
